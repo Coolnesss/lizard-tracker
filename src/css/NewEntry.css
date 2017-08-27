@@ -1,0 +1,8 @@
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.rc-slider {
+  margin-bottom: 3%;
+}

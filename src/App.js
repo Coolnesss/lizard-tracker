@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Main from 'Main';
-import Header from 'Header';
+import Main from './Main';
+import Header from './Header';
+import 'spectre.css/docs/dist/spectre.css';
 
 class App extends Component {
   render() {
