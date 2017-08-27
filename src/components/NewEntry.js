@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ActivitySlider from './ActivitySlider';
 import '../css/NewEntry.css';
+import { postEntry } from '../util';
 
 export default class NewEntry extends Component {
 
@@ -15,6 +16,7 @@ export default class NewEntry extends Component {
   generalWeight = null;
   generalActivity = null;
   generalComments = null;
+  generalPoop = null;
   
   constructor(props) {
     super(props);
@@ -25,6 +27,29 @@ export default class NewEntry extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+
+    const entry = {
+      breakfastCrickets : this.breakfastCrickets.value,
+      breakfastVeggies : this.breakfastVeggies.checked,
+      breakfastComments : this.breakfastComments.value,
+      dinnerCrickets : this.dinnerCrickets.value,
+      dinnerVeggies : this.dinnerVeggies.checked,
+      dinnerComments : this.dinnerComments.value,
+      generalBath : this.generalBath.checked,
+      generalLength : this.generalLength.value,
+      generalWeight : this.generalWeight.value,
+      generalActivity : this.generalActivity,
+      generalComments : this.generalComments.value,
+      generalPoop : this.generalPoop.checked
+    };
+
+    postEntry(entry)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   sliderOnChange(e) {
@@ -48,8 +73,8 @@ export default class NewEntry extends Component {
           </div>
 
           <div className="form-group">
-            <label className="form-switch">
-              <input ref={(e) => this.breakfastVeggies = e} type="checkbox" />
+            <label htmlFor="breakfast-veggies" className="form-switch">
+              <input id="breakfast-veggies" ref={(e) => this.breakfastVeggies = e} type="checkbox" />
               <i className="form-icon"></i> Did your beardie eat veggies?
             </label>
           </div>
@@ -74,8 +99,8 @@ export default class NewEntry extends Component {
           </div>
 
           <div className="form-group">
-            <label className="form-switch">
-              <input ref={(e) => this.dinnerVeggies = e} type="checkbox" />
+            <label htmlFor="dinner-veggies" className="form-switch">
+              <input id="dinner-veggies" ref={(e) => this.dinnerVeggies = e} type="checkbox" />
               <i className="form-icon"></i> Did your beardie eat veggies?
             </label>
           </div>
@@ -91,15 +116,15 @@ export default class NewEntry extends Component {
 
           <h4>General</h4>
           <div className="form-group">
-            <label className="form-switch">
-              <input type="checkbox" />
+            <label htmlFor="general-poop" className="form-switch">
+              <input id="general-poop" ref={(e) => this.generalPoop = e} type="checkbox" />
               <i className="form-icon"></i> Did your beardy poop?
             </label>
           </div>
 
           <div className="form-group">
-            <label className="form-switch">
-              <input ref={(e) => this.generalBath = e}type="checkbox" />
+            <label htmlFor="general-bath" className="form-switch">
+              <input id="general-bath" ref={(e) => this.generalBath = e} type="checkbox" />
               <i className="form-icon"></i> Did your beardy get a bath?
             </label>
           </div>
@@ -120,7 +145,7 @@ export default class NewEntry extends Component {
               <label className="form-label">Weight</label>
             </div>
             <div className="col-9">
-              <input ref={(e) => this.generalWeight = e} className="form-input" type="number" placeholder="Weight (grams)" />
+              <input ref={(e) => this.generalWeight = e} className="form-input" type="decimal" placeholder="Weight (grams)" />
             </div>
           </div>
 
@@ -129,7 +154,7 @@ export default class NewEntry extends Component {
               <label className="form-label" >Length</label>
             </div>
             <div className="col-9">
-              <input ref={(e) => this.generalLength = e} className="form-input" type="number" placeholder="Length (centimeters)" />
+              <input ref={(e) => this.generalLength = e} className="form-input" type="decimal" placeholder="Length (centimeters)" />
             </div>
           </div>
 
