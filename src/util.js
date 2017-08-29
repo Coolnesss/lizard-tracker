@@ -11,3 +11,10 @@ export const postEntry = (entry) => {
   return axios.post(URL + "entries", {entry}, {headers});
 }
 
+export const getEntries = () => {
+  return axios.get(URL + "entries", { headers });
+}
+
+export const getEntry = (id) => {
+  return axios.get(URL + `entries/${id}`, { headers });
+}

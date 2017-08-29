@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ActivitySlider from './ActivitySlider';
 import '../css/NewEntry.css';
-import { postEntry } from '../util';
+import { postEntry, getEntry } from '../util';
 
 export default class NewEntry extends Component {
 
@@ -23,6 +23,42 @@ export default class NewEntry extends Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.sliderOnChange = this.sliderOnChange.bind(this);
+    this.isEditMode = this.isEditMode.bind(this);
+
+    this.state = {
+      loading: false
+    }
+  }
+
+  isEditMode() {
+    return this.props.match.path === "/entries/:id";
+  }
+  
+  componentWillMount() {
+    /* Fetch resource, prefill fields if route is /entries/:id */
+    
+    if (this.isEditMode()) {
+      this.setState({
+        loading: true
+      }, () => {
+        getEntry(this.props.match.params.id).then((response) => {
+          this.setState({
+            entry: response.data,
+            loading: false
+          }, () => {            
+            for (let attribute of Object.keys(this.state.entry)) {
+              if (this[attribute]) {
+                if (typeof(this.state.entry[attribute]) === "boolean") {
+                  this[attribute].checked = this.state.entry[attribute];
+                } else {
+                  this[attribute].value = this.state.entry[attribute]
+                }
+              }
+            }
+          })
+        }).catch((error) => console.error(error));
+      })
+    }
   }
 
   onSubmit(e) {
@@ -43,13 +79,19 @@ export default class NewEntry extends Component {
       generalPoop : this.generalPoop.checked
     };
 
-    postEntry(entry)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    this.setState({
+      loading: true
+    }, () => {
+      postEntry(entry)
+        .then((response) => {
+          this.setState({
+            loading: false
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
   }
 
   sliderOnChange(e) {
@@ -59,7 +101,7 @@ export default class NewEntry extends Component {
   render() {
     return (
       <div className="container grid-sm">
-        <h1>New Entry</h1>
+        <h1>{this.isEditMode() ? "Edit Entry" : "New Entry"}</h1>
         <form onSubmit={this.onSubmit} className="form-horizontal">
           <h4>Breakfast</h4>
 
@@ -136,6 +178,7 @@ export default class NewEntry extends Component {
             <div className="col-9 align-center">
               <ActivitySlider
                 onChange={this.sliderOnChange}
+                value={this.state.entry ? this.state.entry.generalActivity : 0}
               />
             </div>
           </div>
@@ -167,7 +210,7 @@ export default class NewEntry extends Component {
             </div>
           </div>
           <div className="form-group">
-            <button className="btn btn-primary" type="submit">Submit</button>
+            <button className={`btn btn-primary ${this.state.loading ? "loading" : ""}`} type="submit">Submit</button>
           </div>
         </form>
       </div>
