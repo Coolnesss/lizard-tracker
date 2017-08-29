@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import 'rc-slider/assets/index.css';
 
 export default class ActivitySlider extends Component {
-  
+
   render() {
     return (
       <Slider

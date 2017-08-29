@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { getEntries } from '../util';
 import EntryCard from './EntryCard';
-import {Route} from 'react-router-dom';
-import NewEntry from './NewEntry';
 
 export default class Entries extends Component {
 

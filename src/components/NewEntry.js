@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ActivitySlider from './ActivitySlider';
 import '../css/NewEntry.css';
-import { postEntry, getEntry } from '../util';
+import { postEntry, getEntry, putEntry } from '../util';
 
 export default class NewEntry extends Component {
 
@@ -14,7 +14,6 @@ export default class NewEntry extends Component {
   generalBath = null;
   generalLength = null;
   generalWeight = null;
-  generalActivity = null;
   generalComments = null;
   generalPoop = null;
   
@@ -44,8 +43,9 @@ export default class NewEntry extends Component {
         getEntry(this.props.match.params.id).then((response) => {
           this.setState({
             entry: response.data,
-            loading: false
-          }, () => {            
+            loading: false,
+            sliderValue: response.data.generalActivity
+          }, () => {
             for (let attribute of Object.keys(this.state.entry)) {
               if (this[attribute]) {
                 if (typeof(this.state.entry[attribute]) === "boolean") {
@@ -61,6 +61,13 @@ export default class NewEntry extends Component {
     }
   }
 
+  postOrPutEntry(entry) {
+    if (this.isEditMode()) {
+      return putEntry(this.props.match.params.id, entry);
+    }
+    return postEntry(entry);
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -74,7 +81,7 @@ export default class NewEntry extends Component {
       generalBath : this.generalBath.checked,
       generalLength : this.generalLength.value,
       generalWeight : this.generalWeight.value,
-      generalActivity : this.generalActivity,
+      generalActivity : this.state.sliderValue,
       generalComments : this.generalComments.value,
       generalPoop : this.generalPoop.checked
     };
@@ -82,7 +89,7 @@ export default class NewEntry extends Component {
     this.setState({
       loading: true
     }, () => {
-      postEntry(entry)
+      this.postOrPutEntry(entry)
         .then((response) => {
           this.setState({
             loading: false
@@ -95,7 +102,9 @@ export default class NewEntry extends Component {
   }
 
   sliderOnChange(e) {
-    this.generalActivity = e;
+    this.setState({
+      sliderValue: e
+    });
   }
 
   render() {
@@ -178,7 +187,7 @@ export default class NewEntry extends Component {
             <div className="col-9 align-center">
               <ActivitySlider
                 onChange={this.sliderOnChange}
-                value={this.state.entry ? this.state.entry.generalActivity : 0}
+                value={this.state.sliderValue}
               />
             </div>
           </div>

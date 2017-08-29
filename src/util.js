@@ -18,3 +18,7 @@ export const getEntries = () => {
 export const getEntry = (id) => {
   return axios.get(URL + `entries/${id}`, { headers });
 }
+
+export const putEntry = (id, entry) => {
+  return axios.put(URL + `entries/${id}`, { entry } ,{ headers })
+}
