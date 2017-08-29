@@ -23,9 +23,15 @@ export default class EntryCard extends Component {
               <input disabled checked={this.props.entry.generalPoop} type="checkbox" />
               <i className="form-icon"></i> pooped
             </label>
+            <br/>
             <label className="form-switch">
               <input disabled checked={this.props.entry.generalBath} type="checkbox" />
               <i className="form-icon"></i> bathed
+            </label>
+            <br/>
+            <label className="form-switch">
+              <input disabled checked={this.props.entry.generalCalcium} type="checkbox" />
+              <i className="form-icon"></i> calcium
             </label>
             <p className="entry-card-text">{this.props.entry.generalComments}</p>
           </div>

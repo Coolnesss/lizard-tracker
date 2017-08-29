@@ -16,6 +16,7 @@ export default class NewEntry extends Component {
   generalWeight = null;
   generalComments = null;
   generalPoop = null;
+  generalCalcium = null;
   
   constructor(props) {
     super(props);
@@ -83,7 +84,8 @@ export default class NewEntry extends Component {
       generalWeight : this.generalWeight.value,
       generalActivity : this.state.sliderValue,
       generalComments : this.generalComments.value,
-      generalPoop : this.generalPoop.checked
+      generalPoop : this.generalPoop.checked,
+      generalCalcium : this.generalCalcium.checked
     };
 
     this.setState({
@@ -177,6 +179,13 @@ export default class NewEntry extends Component {
             <label htmlFor="general-bath" className="form-switch">
               <input id="general-bath" ref={(e) => this.generalBath = e} type="checkbox" />
               <i className="form-icon"></i> Did your beardy get a bath?
+            </label>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="general-calcium" className="form-switch">
+              <input id="general-calcium" ref={(e) => this.generalCalcium = e} type="checkbox" />
+              <i className="form-icon"></i> Did your beardy get calcium?
             </label>
           </div>
 
