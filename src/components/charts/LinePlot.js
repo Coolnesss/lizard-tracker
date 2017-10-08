@@ -13,13 +13,13 @@ export default class LinePlot extends Component {
     }
     const axisSettings = {
         y: {
-          max: 50,
-          min: 0
+          max: 40,
+          min: 15
       }
     }
     return (
 
-      <C3Chart data={this.props.data} axis={axisSettings} />
+      <C3Chart data={this.props.data} axis={this.props.axis || axisSettings} />
     );
   }
 
