@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const URL = "http://192.168.1.239:3000/"
+export const URL = "http://192.168.1.222:3000/"
 
 const headers = {
   "X-Key-Inflection": "camel",
@@ -21,4 +21,10 @@ export const getEntry = (id) => {
 
 export const putEntry = (id, entry) => {
   return axios.put(URL + `entries/${id}`, { entry } ,{ headers })
+}
+
+export const parse = (entries, keyword) => {
+  return entries.map((e) => {
+    return e[keyword];
+  });
 }
